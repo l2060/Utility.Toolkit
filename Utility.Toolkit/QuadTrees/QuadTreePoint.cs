@@ -1,9 +1,9 @@
 ﻿
-using Utility.Toolkit.QuadTrees.Common;
-using Utility.Toolkit.QuadTrees.QTreePoint;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Utility.Toolkit.QuadTrees.Common;
+using Utility.Toolkit.QuadTrees.QTreePoint;
 
 namespace Utility.Toolkit.QuadTrees
 {

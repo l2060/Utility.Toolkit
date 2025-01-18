@@ -1,9 +1,9 @@
-﻿using Utility.Toolkit.Analysis;
-using Utility.Toolkit.Probability.DSL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Utility.Toolkit.Analysis;
+using Utility.Toolkit.Probability.DSL;
 
 
 namespace Utility.Toolkit.Probability

@@ -1,8 +1,8 @@
-﻿using Utility.Toolkit.Enums;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Utility.Toolkit.Enums;
 
 namespace System
 {
@@ -152,7 +152,7 @@ namespace System
         /// <returns>0:LEFT DIR, 1:RIGHT DIR</returns>
         public static Direction8[] Sides(this Direction8 direction)
         {
-           return  DIRECTION8_DEFINES[(Byte)direction];
+            return DIRECTION8_DEFINES[(Byte)direction];
         }
 
 

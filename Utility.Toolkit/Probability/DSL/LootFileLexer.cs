@@ -1,8 +1,8 @@
-﻿using Utility.Toolkit.Analysis;
-using Utility.Toolkit.Analysis.Rules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Utility.Toolkit.Analysis;
+using Utility.Toolkit.Analysis.Rules;
 
 namespace Utility.Toolkit.Probability.DSL
 {

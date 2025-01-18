@@ -1,5 +1,5 @@
-using Utility.Toolkit.QuadTrees.Common;
 using System.Drawing;
+using Utility.Toolkit.QuadTrees.Common;
 
 namespace Utility.Toolkit.QuadTrees.QTreeRect
 {
