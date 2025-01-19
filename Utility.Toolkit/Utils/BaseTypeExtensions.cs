@@ -27,6 +27,19 @@ namespace System
             return descAttr.Description;
         }
 
+        /// <summary>
+        /// 获取指定枚举类型的所有成员
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T[] GetMembers<T>() where T : Enum
+        {
+            var array = Enum.GetValues(typeof(T));
+            T[] Result = new T[array.Length];
+            array.CopyTo(Result, 0);
+            return Result;
+        }
+
 
         public static Int64 ToInt64(this Point p)
         {
@@ -34,12 +47,7 @@ namespace System
             return (Value << 32) | (Int64)p.Y;
         }
 
-        public static Point ToPoint(this Int64 Value64)
-        {
-            int X = (Int32)(Value64 >> 32);
-            int Y = (Int32)(((Int64)(Value64 >> 32 << 32)) | Value64);
-            return new Point(X, Y);
-        }
+
 
 
         /// <summary>
