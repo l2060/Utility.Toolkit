@@ -2,8 +2,14 @@
 
 namespace Utility.Toolkit
 {
+    /// <summary>
+    /// 雪花算法ID
+    /// </summary>
     public readonly struct SnowflakeId : IEquatable<SnowflakeId>
     {
+        /// <summary>
+        /// 空
+        /// </summary>
         public static readonly SnowflakeId Empty = new SnowflakeId(0);
 
 
@@ -14,12 +20,17 @@ namespace Utility.Toolkit
         {
             this.m_value = value;
         }
+        /// <inheritdoc/>
+
 
         public override string ToString()
         {
             return this.m_value.ToString("X").ToUpper();
         }
 
+        /// <summary>
+        /// 是否为空
+        /// </summary>
         public Boolean IsEmpty
         {
             get
@@ -28,6 +39,9 @@ namespace Utility.Toolkit
             }
         }
 
+        /// <summary>
+        /// 类别
+        /// </summary>
         public Int32 Category
         {
             get
@@ -36,6 +50,9 @@ namespace Utility.Toolkit
             }
         }
 
+        /// <summary>
+        /// 时间戳
+        /// </summary>
         public Int32 Timestamp
         {
             get
@@ -44,6 +61,9 @@ namespace Utility.Toolkit
             }
         }
 
+        /// <summary>
+        /// UTC时间
+        /// </summary>
         public DateTime UTCTime
         {
             get
@@ -51,7 +71,9 @@ namespace Utility.Toolkit
                 return STARTDATE_DEFINE.AddSeconds((this.m_value >> 16) & 0xFFFFFFFF);
             }
         }
-
+        /// <summary>
+        /// 本地时间
+        /// </summary>
         public DateTime LocalTime
         {
             get
@@ -60,6 +82,9 @@ namespace Utility.Toolkit
             }
         }
 
+        /// <summary>
+        /// 序列
+        /// </summary>
         public UInt16 Sequence
         {
             get
@@ -68,7 +93,9 @@ namespace Utility.Toolkit
             }
         }
 
-
+        /// <summary>
+        /// 值
+        /// </summary>
         public Int64 Value
         {
             get
@@ -77,26 +104,40 @@ namespace Utility.Toolkit
             }
         }
 
+        /// <summary>
+        /// ==
+        /// </summary>
+        /// <param name="s1"></param>
+        /// <param name="s2"></param>
+        /// <returns></returns>
         public static bool operator ==(SnowflakeId s1, SnowflakeId s2)
         {
             return s1.m_value == s2.m_value;
         }
 
-
+        /// <summary>
+        /// !=
+        /// </summary>
+        /// <param name="s1"></param>
+        /// <param name="s2"></param>
+        /// <returns></returns>
         public static bool operator !=(SnowflakeId s1, SnowflakeId s2)
         {
             return s1.m_value != s2.m_value;
         }
+        /// <inheritdoc/>
 
         public bool Equals(SnowflakeId other)
         {
             return other.m_value == this.m_value;
         }
+        /// <inheritdoc/>
 
         public override int GetHashCode()
         {
             return unchecked((int)((long)m_value)) ^ (int)(m_value >> 32);
         }
+        /// <inheritdoc/>
 
         public override bool Equals(object obj)
         {
@@ -106,13 +147,19 @@ namespace Utility.Toolkit
             }
             return false;
         }
-
+        /// <summary>
+        /// 隐式转换
+        /// </summary>
+        /// <param name="value"></param>
         public static implicit operator SnowflakeId(String value)
         {
             long result = Convert.ToInt64(value, 16);
             return new SnowflakeId(result);
         }
-
+        /// <summary>
+        /// 隐式转换
+        /// </summary>
+        /// <param name="value"></param>
         public static implicit operator SnowflakeId(Int64 value)
         {
             return new SnowflakeId(value);
@@ -130,6 +177,12 @@ namespace Utility.Toolkit
         private static readonly object _lock = new object();
 
 
+        /// <summary>
+        /// 生成一个ID
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static SnowflakeId Generate(Int32 category)
         {
             if (category < 0 || category > 0xFFF)

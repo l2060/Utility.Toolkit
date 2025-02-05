@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace System
 {
@@ -38,7 +34,7 @@ namespace System
         /// <param name="p2">坐标2</param>
         /// <param name="dRadius">半径</param>
         /// <returns>圆心位置</returns>
-        public static Point[] Circle_Center(Point p1, Point p2, double dRadius)
+        public static PointF[] Circle_Center(PointF p1, PointF p2, double dRadius)
         {
             Double dDistance = System.Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
             if (dDistance == 0.0)
@@ -49,15 +45,15 @@ namespace System
             {
                 throw new Exception("两点间距离大于直径");
             }
-            Point center1 = new Point();
-            Point center2 = new Point();
+            PointF center1 = new PointF();
+            PointF center2 = new PointF();
             double k = (p2.Y - p1.Y) / (p2.X - p1.X);
             if (k == 0)
             {
-                center1.X = (p1.X + p2.X) / 2.0;
-                center2.X = (p1.X + p2.X) / 2.0;
-                center1.Y = p1.Y + System.Math.Sqrt(dRadius * dRadius - (p1.X - p2.X) * (p1.X - p2.X) / 4.0);
-                center2.Y = p2.Y - System.Math.Sqrt(dRadius * dRadius - (p1.X - p2.X) * (p1.X - p2.X) / 4.0);
+                center1.X = (p1.X + p2.X) / 2.0F;
+                center2.X = (p1.X + p2.X) / 2.0F;
+                center1.Y = p1.Y + (float)Math.Sqrt(dRadius * dRadius - (p1.X - p2.X) * (p1.X - p2.X) / 4.0F);
+                center2.Y = p2.Y - (float)Math.Sqrt(dRadius * dRadius - (p1.X - p2.X) * (p1.X - p2.X) / 4.0F);
             }
             else
             {
@@ -68,12 +64,12 @@ namespace System
                 double b = -2 * mid_X - k_verticle * k_verticle * (p1.X + p2.X);
                 double c = mid_X * mid_X + k_verticle * k_verticle * (p1.X + p2.X) * (p1.X + p2.X) / 4.0 - (dRadius * dRadius - ((mid_X - p1.X) * (mid_X - p1.X) + (mid_Y - p1.Y) * (mid_Y - p1.Y)));
 
-                center1.X = (-1.0 * b + System.Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-                center2.X = (-1.0 * b - System.Math.Sqrt(b * b - 4 * a * c)) / (2 * a);
-                center1.Y = Y_Coordinates(mid_X, mid_Y, k_verticle, center1.X);
-                center2.Y = Y_Coordinates(mid_X, mid_Y, k_verticle, center2.X);
+                center1.X = (float)((-1.0F * b + Math.Sqrt(b * b - 4 * a * c)) / (2 * a));
+                center2.X = (float)((-1.0F * b - Math.Sqrt(b * b - 4 * a * c)) / (2 * a));
+                center1.Y = (float)Y_Coordinates(mid_X, mid_Y, k_verticle, center1.X);
+                center2.Y = (float)Y_Coordinates(mid_X, mid_Y, k_verticle, center2.X);
             }
-            return new Point[] { center1, center2 };
+            return new PointF[] { center1, center2 };
         }
 
         /// <summary>
@@ -82,8 +78,9 @@ namespace System
         /// <param name="a">点A</param>
         /// <param name="b">点B</param>
         /// <param name="radius">半径</param>
+        /// <param name="direction">半径</param>
         /// <returns></returns>
-        public static List<Point> GetArcPath(Point a, Point b, Double radius, Direction direction)
+        public static List<PointF> GetArcPath(PointF a, PointF b, Double radius, Direction direction)
         {
             var centers = Circle_Center(b, a, radius);
             if (direction == Direction.Clockwise)
@@ -109,10 +106,10 @@ namespace System
         /// <param name="pEnd">终点</param>
         /// <param name="precision">精度</param>
         /// <returns></returns>
-        public static List<Point> GetLinePoints(Point pStart, Point pEnd, Byte precision = 2)
+        public static List<PointF> GetLinePoints(Point pStart, Point pEnd, Byte precision = 2)
         {
             //定义线上的点
-            List<Point> linePoint = new List<Point>();
+            List<PointF> linePoint = new List<PointF>();
             if (pStart.X == pEnd.X && pStart.Y == pEnd.Y)
             {
                 return linePoint;
@@ -135,10 +132,10 @@ namespace System
                 Double y = pStart.Y;
                 while (y != pEnd.Y)
                 {
-                    linePoint.Add(new Point(pStart.X, y));
+                    linePoint.Add(new PointF(pStart.X, (float)y));
                     y = System.Math.Round(y + stepnumber, precision);
                 }
-                linePoint.Add(new Point(pEnd.X, pEnd.Y));
+                linePoint.Add(new PointF(pEnd.X, pEnd.Y));
             }
             else if (pStart.Y == pEnd.Y)
             {
@@ -147,10 +144,10 @@ namespace System
                 Double x = pStart.X;
                 while (x != pEnd.X)
                 {
-                    linePoint.Add(new Point(x, pStart.Y));
+                    linePoint.Add(new PointF((float)x, pStart.Y));
                     x = System.Math.Round(x + stepnumber, precision);
                 }
-                linePoint.Add(new Point(pEnd.X, pEnd.Y));
+                linePoint.Add(new PointF(pEnd.X, pEnd.Y));
             }
             else
             {
@@ -164,7 +161,7 @@ namespace System
                 {
                     // 根据斜率,计算y坐标
                     double y = System.Math.Round(k * c + pStart.Y, precision);
-                    linePoint.Add(new Point(x, y));
+                    linePoint.Add(new PointF((float)x, (float)y));
                     x = System.Math.Round(x + stepnumber, precision);
                     c = System.Math.Round(c + stepnumber, precision);
                     if (y == pEnd.Y || x == pEnd.X)
@@ -189,9 +186,9 @@ namespace System
         /// <param name="sweepAngle">结束角度</param>
         /// <param name="isUseDegree">标识angle是否为角度还是弧度</param>
         /// <returns></returns>
-        public static List<Point> GetArcPath(Point center, double radius, double angleStart, double sweepAngle, Boolean isUseDegree)
+        public static List<PointF> GetArcPath(PointF center, double radius, double angleStart, double sweepAngle, Boolean isUseDegree)
         {
-            List<Point> result = new List<Point>();
+            List<PointF> result = new List<PointF>();
             double r = radius;//半径
             double ts = angleStart;//起始角度
             double te = sweepAngle;//终止角度
@@ -217,7 +214,7 @@ namespace System
             Double x = xc + r * System.Math.Cos(ts);
             Double y = yc + r * System.Math.Sin(ts);
             //dc.MoveTo(x, y);
-            result.Add(new Point(x, y));
+            result.Add(new PointF((float)x, (float)y));
             for (int i = 1; i <= nCount; i++)
             {
                 ta += dte;
@@ -226,12 +223,12 @@ namespace System
                 x = xc + r * ct;
                 y = yc + r * st;
                 //dc.LineTo(x, y);
-                result.Add(new Point(x, y));
+                result.Add(new PointF((float)x, (float)y));
             }
             x = xc + r * System.Math.Cos(te);
             y = yc + r * System.Math.Sin(te);
             //dc.LineTo(x, y);
-            result.Add(new Point(x, y));
+            result.Add(new PointF((float)x, (float)y));
             return result;
         }
 
@@ -248,9 +245,9 @@ namespace System
         /// <param name="cc"></param>
         /// <param name="r"> 半径</param>
         /// <returns></returns>
-        private static Double angle_360(Point p1, Point cc, Double r)
+        private static Double angle_360(PointF p1, Point cc, Double r)
         {
-            return System.Math.Acos((p1.X - cc.X) / r) * 180d / System.Math.PI;
+            return Math.Acos((p1.X - cc.X) / r) * 180d / System.Math.PI;
         }
 
         /// <summary>
@@ -259,7 +256,7 @@ namespace System
         /// <param name="from_"></param>
         /// <param name="to_"></param>
         /// <returns></returns>
-        private static Double angle_360(Point from_, Point to_)
+        private static Double angle_360(PointF from_, PointF to_)
         {
             //两点的x、y值
             Double x = from_.X - to_.X;

@@ -130,14 +130,22 @@ namespace Utility.Toolkit.Probability
             }
         }
 
-
+        /// <summary>
+        /// 添加一个物品
+        /// </summary>
+        /// <param name="probability"></param>
+        /// <param name="item"></param>
+        /// <param name="stock"></param>
         public void Add(Double probability, in TValue item, Int32 stock = -1)
         {
             this._items.Add(new ReadOnlyItem<TValue>(probability, item, stock));
             this.IsReady = false;
         }
 
-
+        /// <summary>
+        /// 克隆一个抽奖器
+        /// </summary>
+        /// <returns></returns>
         public Roulette<TValue> Clone()
         {
             var lottery = new Roulette<TValue>();

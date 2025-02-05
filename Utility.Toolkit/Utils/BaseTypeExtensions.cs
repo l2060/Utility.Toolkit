@@ -6,13 +6,15 @@ using Utility.Toolkit.Enums;
 
 namespace System
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class BaseTypeExtensions
     {
 
         /// <summary>
         /// 获取枚举值上的Description特性的说明
         /// </summary>
-        /// <typeparam name="T">枚举类型</typeparam>
         /// <param name="obj">枚举值</param>
         /// <returns>特性的说明</returns>
         public static string GetDescription(this Enum obj)
@@ -40,7 +42,11 @@ namespace System
             return Result;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public static Int64 ToInt64(this Point p)
         {
             Int64 Value = p.X;
@@ -178,8 +184,6 @@ namespace System
             Int32 result = 0;
             Double fx = end.X - start.X;
             Double fy = end.Y - start.Y;
-            Int32 sx = 0;
-            Int32 sy = 0;
             if (fx == 0)
             {
                 if (fy < 0)

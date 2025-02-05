@@ -58,6 +58,7 @@ namespace Utility.Toolkit
             }
         }
 
+        /// <summary/>
         public static void PackBlocks2(Size area, List<IBlockFragment> blocks)
         {
             // Step 1: Sort blocks by height and width (same as before)
@@ -132,6 +133,7 @@ namespace Utility.Toolkit
         }
 
 
+        /// <summary/>
         public static void PackBlocks3(Size area, List<IBlockFragment> blocks)
         {
             // 按宽度降序排列方块
@@ -188,7 +190,7 @@ namespace Utility.Toolkit
                 }
             }
         }
-      
+
 
     }
 }

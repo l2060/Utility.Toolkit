@@ -2,11 +2,26 @@
 
 namespace Utility.Toolkit.Analysis
 {
+    /// <summary>
+    /// token symbol
+    /// </summary>
     public enum ValueType
     {
+        /// <summary>
+        /// token value type is string
+        /// </summary>
         String,
+        /// <summary>
+        /// token value type is number
+        /// </summary>
         Number,
+        /// <summary>
+        /// token value type is boolean
+        /// </summary>
         Boolean,
+        /// <summary>
+        /// token value type is null
+        /// </summary>
         Null,
     }
 
@@ -19,13 +34,24 @@ namespace Utility.Toolkit.Analysis
         {
         }
 
+        /// <summary>
+        /// get token value type
+        /// </summary>
         public ValueType Type { get; protected set; }
 
+        /// <summary>
+        /// get token value
+        /// </summary>
+        /// <returns></returns>
         public virtual string ToValue()
         {
             return Value;
         }
     }
+
+    /// <summary>
+    /// boolean token
+    /// </summary>
     public class BooleanToken : ValueToken
     {
         internal BooleanToken()
@@ -35,7 +61,9 @@ namespace Utility.Toolkit.Analysis
     }
 
 
-
+    /// <summary>
+    /// end of file token
+    /// </summary>
     public class EndOfFileToken : Token
     {
         internal EndOfFileToken()
@@ -43,18 +71,31 @@ namespace Utility.Toolkit.Analysis
             Symbol = Symbol.EOF;
         }
     }
+
+
+    /// <summary>
+    /// identifier token
+    /// </summary>
     public class IdentifierToken : Token
     {
         internal IdentifierToken()
         {
         }
     }
+
+    /// <summary>
+    /// keyword token
+    /// </summary>
     public class KeywordToken : Token
     {
         internal KeywordToken()
         {
         }
     }
+
+    /// <summary>
+    /// null token
+    /// </summary>
     public class NullToken : ValueToken
     {
         internal NullToken()
@@ -62,6 +103,10 @@ namespace Utility.Toolkit.Analysis
             this.Type = ValueType.Null;
         }
     }
+
+    /// <summary>
+    /// number token
+    /// </summary>
     public class NumberToken : ValueToken
     {
         internal NumberToken()
@@ -70,6 +115,9 @@ namespace Utility.Toolkit.Analysis
         }
     }
 
+    /// <summary>
+    /// punctuator token
+    /// </summary>
     public class PunctuatorToken : Token
     {
         internal PunctuatorToken()
@@ -77,7 +125,9 @@ namespace Utility.Toolkit.Analysis
         }
     }
 
-
+    /// <summary>
+    /// new line token
+    /// </summary>
     public class NewLineToken : Token
     {
         internal NewLineToken()
@@ -88,7 +138,9 @@ namespace Utility.Toolkit.Analysis
 
 
 
-
+    /// <summary>
+    /// operator token
+    /// </summary>
     public class OperatorToken : PunctuatorToken
     {
         internal OperatorToken()
@@ -96,12 +148,16 @@ namespace Utility.Toolkit.Analysis
         }
     }
 
+    /// <summary>
+    /// string token
+    /// </summary>
     public class StringToken : ValueToken
     {
         internal StringToken()
         {
             this.Type = ValueType.String;
         }
+        /// <inheritdoc/>
 
         public override string ToValue()
         {

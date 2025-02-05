@@ -3,8 +3,12 @@
 
 namespace Utility.Toolkit.Analysis.Rules
 {
+    /// <summary>
+    /// Row comment rule.
+    /// </summary>
     public class RowCommentRule : ILexicalRules
     {
+        /// <inheritdoc/>
         public RuleTestResult Test(in ReadOnlySpan<Char> codeSpan, in Int32 LineNumber, in Int32 ColumnNumber)
         {
             var result = new RuleTestResult();

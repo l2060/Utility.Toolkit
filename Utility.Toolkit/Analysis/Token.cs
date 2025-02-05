@@ -2,8 +2,14 @@
 
 namespace Utility.Toolkit.Analysis
 {
+    /// <summary>
+    /// token
+    /// </summary>
     public abstract class Token
     {
+        /// <summary>
+        /// end of file
+        /// </summary>
         public static Token EOF = new EndOfFileToken(); // end of file
 
         /// <summary>
@@ -42,6 +48,7 @@ namespace Utility.Toolkit.Analysis
             set;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"LineNumber:{LineNumber.ToString().PadLeft(4, '0')} ColumnNumber:{ColumnNumber.ToString().PadLeft(3, '0')} {GetType().Name.PadRight(15, ' ')} {Value}";

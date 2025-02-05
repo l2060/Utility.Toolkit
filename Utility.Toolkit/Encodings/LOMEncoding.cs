@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 
 
-namespace LOM.Shared.Encoding
+namespace Utility.Toolkit.Encodings
 {
 
     /// <summary>
@@ -16,7 +16,9 @@ namespace LOM.Shared.Encoding
         private readonly static String defaultAESKey = "69D73CE46F0D4FC6B79702ED56D46940";
 
 
-
+        /// <summary>
+        /// 加载密钥
+        /// </summary>
         public static void loadKey()
         {
             RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
@@ -69,10 +71,11 @@ namespace LOM.Shared.Encoding
             return MD5(data);
         }
 
+
         /// <summary>
         /// 生成MD5签名
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
         public static String MD5(byte[] data)
         {
@@ -98,7 +101,7 @@ namespace LOM.Shared.Encoding
         /// <summary>
         /// 生成SHA256签名
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
         public static String SHA256(byte[] data)
         {
@@ -110,14 +113,6 @@ namespace LOM.Shared.Encoding
         }
 
 
-
-
-        public static String EncodePassword(String plainText)
-        {
-            var data = System.Text.Encoding.UTF8.GetBytes(plainText);
-            var result = AESEncrypt(data, "2023-03-26 00:00:00");
-            return Convert.ToBase64String(result);
-        }
 
 
 
@@ -148,8 +143,24 @@ namespace LOM.Shared.Encoding
         }
 
 
+        /// <summary>
+        /// 生成SHA512签名
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <returns></returns>
+        public static String EncodePassword(String plainText)
+        {
+            var data = System.Text.Encoding.UTF8.GetBytes(plainText);
+            var result = AESEncrypt(data, "2023-03-26 00:00:00");
+            return Convert.ToBase64String(result);
+        }
 
 
+        /// <summary>
+        /// AES 对称加密
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static String EncryptPassword(String password)
         {
             var bytes = System.Text.Encoding.UTF8.GetBytes(password);

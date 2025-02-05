@@ -6,9 +6,12 @@ using System.Runtime.CompilerServices;
 
 namespace Utility.Toolkit.Utils
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class NumberUtils
     {
-        
+
         /// <summary>
         /// 
         /// </summary>

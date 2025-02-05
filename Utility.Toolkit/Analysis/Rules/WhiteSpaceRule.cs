@@ -2,8 +2,12 @@
 
 namespace Utility.Toolkit.Analysis.Rules
 {
+    /// <summary>
+    /// White space rule.
+    /// </summary>
     public class WhiteSpaceRule : ILexicalRules
     {
+        /// <inheritdoc/>
         public RuleTestResult Test(in ReadOnlySpan<Char> codeSpan, in Int32 LineNumber, in Int32 ColumnNumber)
         {
             var result = new RuleTestResult();

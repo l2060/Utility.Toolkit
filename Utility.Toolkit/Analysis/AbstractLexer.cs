@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Utility.Toolkit.Analysis
 {
+
+    /// <summary>
+    /// Symbol Provider
+    /// </summary>
     public class SymbolProvider
     {
         private readonly Dictionary<string, Symbol> _SymbolMaps = new Dictionary<string, Symbol>();
@@ -16,7 +20,10 @@ namespace Utility.Toolkit.Analysis
             return symbol;
         }
 
-
+        /// <summary>
+        /// Register symbol
+        /// </summary>
+        /// <param name="symbol"></param>
         public void Register(Symbol symbol)
         {
             _SymbolMaps.Add(symbol.Name, symbol);
@@ -30,11 +37,31 @@ namespace Utility.Toolkit.Analysis
     /// </summary>
     public abstract class AbstractLexer
     {
+        /// <summary>
+        /// currnt parse line number
+        /// </summary>
         public Int32 LineNumber { get; private set; } = 1;
+
+        /// <summary>
+        /// current parse column number
+        /// </summary>
         public Int32 ColumnNumber { get; private set; } = 1;
+
+        /// <summary>
+        /// Full path of the file
+        /// </summary>
         public String FullPath { get; private set; }
+        /// <summary>
+        /// File name
+        /// </summary>
         public String FileName { get; private set; }
+        /// <summary>
+        /// Input data
+        /// </summary>
         public String InputData { get; private set; }
+        /// <summary>
+        /// Full path of the Directory
+        /// </summary>
         public String Directory { get; private set; }
 
         private List<Token> tokens = new List<Token>();
@@ -131,7 +158,6 @@ namespace Utility.Toolkit.Analysis
         /// <summary>
         /// If it is the specified symbol, take it out and return true, otherwise return false
         /// </summary>
-        /// <param name="symbol"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         public T TestNextOfKind<T>() where T : Token

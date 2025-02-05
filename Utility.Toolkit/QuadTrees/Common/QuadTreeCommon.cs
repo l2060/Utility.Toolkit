@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace Utility.Toolkit.QuadTrees.Common
 {
+    /// <summary>
+    /// A QuadTree is a structure designed to partition space so that it
+    /// </summary>
+    /// <typeparam name="TObject"></typeparam>
+    /// <typeparam name="TNode"></typeparam>
+    /// <typeparam name="TQuery"></typeparam>
     public abstract class QuadTreeCommon<TObject, TNode, TQuery> : ICollection<TObject> where TNode : QuadTreeNodeCommon<TObject, TNode, TQuery>
     {
         #region Private Members
@@ -17,11 +23,18 @@ namespace Utility.Toolkit.QuadTrees.Common
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         // Alternate method, use Parallel arrays
 
-        // The root of this quad tree
+        /// <summary>
+        /// The root of this quad tree
+        /// </summary>
         protected readonly TNode QuadTreePointRoot;
 
         #endregion
 
+        /// <summary>
+        /// Create a new node for the QuadTree
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
         protected abstract TNode CreateNode(Rectangle rect);
 
         #region Constructor
@@ -99,7 +112,11 @@ namespace Utility.Toolkit.QuadTrees.Common
             QuadTreePointRoot.GetObjects(rect, results.Add);
         }
 
-
+        /// <summary>
+        /// Get the objects in this tree that intersect with the specified rectangle.
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <param name="add"></param>
         public void GetObjects(TQuery rect, Action<TObject> add)
         {
             QuadTreePointRoot.GetObjects(rect, add);
@@ -381,6 +398,11 @@ namespace Utility.Toolkit.QuadTrees.Common
             Debug.Assert(WrappedDictionary.Count == origCount + points.Count());
         }
 
+        /// <summary>
+        /// Add a range of objects to the Quad Tree
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="threadLevel"></param>
         public void AddBulk(IEnumerable<TObject> points, int threadLevel = 0)
         {
             QuadTreePointRoot.AddBulk(points.ToArray(), (a) =>

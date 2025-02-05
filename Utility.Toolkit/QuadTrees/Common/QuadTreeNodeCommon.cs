@@ -9,15 +9,32 @@ using System.Threading.Tasks;
 
 namespace Utility.Toolkit.QuadTrees.Common
 {
+    /// <summary>
+    /// Represents a single node in a QuadTree
+    /// </summary>
     public abstract class QuadTreeNodeCommon
     {
         // How many objects can exist in a QuadTree before it sub divides itself
-        public const int MaxObjectsPerNode = 10;//scales up to about 16 on removal
+        /// <summary>
+        /// scales up to about 16 on removal
+        /// </summary>
+        public const int MaxObjectsPerNode = 10;
+        /// <summary>
+        /// 
+        /// </summary>
         public const int MaxOptimizeDeletionReAdd = 22;
+        /// <summary>
+        /// 
+        /// </summary>
         public static float ReBalanceOffset = 0.2f;
+        /// <summary>
+        /// 
+        /// </summary>
         public const int MinBalance = 256;
-
-        protected Rectangle Rect; // The area this QuadTree represents
+        /// <summary>
+        /// The area this QuadTree represents
+        /// </summary>
+        protected Rectangle Rect;
 
         /// <summary>
         /// The area this QuadTree represents.
@@ -27,7 +44,12 @@ namespace Utility.Toolkit.QuadTrees.Common
             get { return Rect; }
         }
     }
-
+    /// <summary>
+    /// Represents a single node in a QuadTree
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TNode"></typeparam>
+    /// <typeparam name="TQuery"></typeparam>
     public abstract class QuadTreeNodeCommon<T, TNode, TQuery> : QuadTreeNodeCommon
         where TNode : QuadTreeNodeCommon<T, TNode, TQuery>
     {
@@ -46,7 +68,7 @@ namespace Utility.Toolkit.QuadTrees.Common
         #endregion
 
         #region Public Properties
-
+        /// <summary/>
         public Point CenterPoint
         {
             get { return _childBr.Rect.Location; }
@@ -98,27 +120,37 @@ namespace Utility.Toolkit.QuadTrees.Common
         {
             get { return ChildTl == null && _objectCount == 0; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public TNode ChildTl
         {
             get { return _childTl; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public TNode ChildTr
         {
             get { return _childTr; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public TNode ChildBl
         {
             get { return _childBl; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public TNode ChildBr
         {
             get { return _childBr; }
         }
-
+/// <summary>
+/// 
+/// </summary>
         public TNode Parent
         {
             get { return _parent; }
@@ -255,14 +287,26 @@ namespace Utility.Toolkit.QuadTrees.Common
             }
         }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="Rectangle"></param>
         protected void VerifyNodeAssertions(Rectangle Rectangle)
         {
             Debug.Assert(Rectangle.Width > 0);
             Debug.Assert(Rectangle.Height > 0);
         }
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="Rectangle"></param>
+/// <returns></returns>
         protected abstract TNode CreateNode(Rectangle Rectangle);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
         public IEnumerable<TNode> GetChildren()
         {
             if (ChildTl == null)
@@ -590,6 +634,13 @@ namespace Utility.Toolkit.QuadTrees.Common
             }
         }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="points"></param>
+    /// <param name="createObject"></param>
+    /// <param name="threadLevel"></param>
+    /// <exception cref="InvalidOperationException"></exception>
         public void AddBulk(T[] points, Func<T, QuadTreeObject<T, TNode>> createObject, int threadLevel = 0)
         {
 #if DEBUG
@@ -729,12 +780,21 @@ namespace Utility.Toolkit.QuadTrees.Common
         }
 
         #endregion
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public bool ContainsPoint(Point point)
         {
             return Rect.Contains(point);
         }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="qto"></param>
+    /// <returns></returns>
         public abstract bool ContainsObject(QuadTreeObject<T, TNode> qto);
 
         #region Internal Methods
@@ -784,12 +844,22 @@ namespace Utility.Toolkit.QuadTrees.Common
             }
         }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="objects"></param>
+    /// <returns></returns>
         public bool HasAtleast(int objects)
         {
             _HasAtLeast(ref objects);
             return objects <= 0;
         }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="objects"></param>
+    /// <returns></returns>
         public bool HasNoMoreThan(int objects)
         {
             return !HasAtleast(objects + 1);
@@ -876,6 +946,12 @@ namespace Utility.Toolkit.QuadTrees.Common
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Rectangle"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         protected abstract bool CheckContains(Rectangle Rectangle, T data);
 
 
@@ -889,8 +965,20 @@ namespace Utility.Toolkit.QuadTrees.Common
             GetObjects(searchRect, results.Add);
             return results;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="rect"></param>
+        /// <returns></returns>
         protected abstract bool QueryContains(TQuery search, Rectangle rect);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="rect"></param>
+        /// <returns></returns>
         protected abstract bool QueryIntersects(TQuery search, Rectangle rect);
 
         /// <summary>
@@ -1025,6 +1113,10 @@ namespace Utility.Toolkit.QuadTrees.Common
             GetAllObjects((a) => put(a.Data));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="put"></param>
         public void GetAllObjects(Action<QuadTreeObject<T, TNode>> put)
         {
             // If this Quad has objects, add them
@@ -1083,7 +1175,11 @@ namespace Utility.Toolkit.QuadTrees.Common
         }
     }
 
-
+    /// <summary>
+    /// A QuadTree is a structure used to partition a two-dimensional space into regions.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TNode"></typeparam>
     public abstract class QuadTreeNodeCommon<T, TNode> : QuadTreeNodeCommon<T, TNode, Rectangle>
         where TNode : QuadTreeNodeCommon<T, TNode>
     {

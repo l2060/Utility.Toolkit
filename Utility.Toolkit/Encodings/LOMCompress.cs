@@ -4,12 +4,12 @@ using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 
-namespace LOM.Shared.Compression
+namespace Utility.Toolkit.Encodings
 {
     /// <summary>
-    ///  Use      Time : None < Encrypt < GZip < Zlib ≈ Deflate < Brotli \
-    ///  Compress Size : Brotli < Deflate < zLib ≈ GZip < None < Encrypt \
-    ///  数据量小时用 Deflate \
+    ///  Use      Time : None &lt; Encrypt &lt; GZip &lt; Zlib ≈ Deflate &lt; Brotli <br/>
+    ///  Compress Size : Brotli &gt; Deflate &gt; zLib ≈ GZip &gt; None &gt; Encrypt <br/>
+    ///  数据量小时用 Deflate <br/>
     ///  数据量大时用 GZip zLib Deflate
     /// </summary>
     public enum CompressType
@@ -19,33 +19,29 @@ namespace LOM.Shared.Compression
         /// </summary>
         None = 0,
         /// <summary>
-        /// AES加密处理
-        /// </summary>
-        Encrypt = 1,
-        /// <summary>
         /// Brotli算法压缩
         /// 压缩效果好 速度慢 
         /// 小数据量压缩效果好
         /// </summary>
-        Brotli = 2,
+        Brotli = 1,
         /// <summary>
         /// GZip算法压缩
         /// 压缩效果适中 速度快 
         /// 小数据量压缩反弹严重
         /// </summary>
-        GZip = 3,
+        GZip = 2,
         /// <summary>
         /// zLib算法压缩
         /// 压缩效果适中 速度快
         /// 小数据量压缩适中
         /// </summary>
-        ZLib = 4,
+        ZLib = 3,
         /// <summary>
         /// Deflate算法压缩
         /// 压缩效果适中 速度快  
         /// 小数据量压缩效果最好
         /// </summary>
-        Deflate = 5
+        Deflate = 4
     }
 
 
@@ -65,12 +61,9 @@ namespace LOM.Shared.Compression
     public static class LOMCompress
     {
         private delegate byte[] CompressDelegate(byte[] bytes);
-        private readonly static Byte[] aes_keys = { 135, 177, 160, 59, 66, 128, 206, 49, 250, 131, 173, 42, 37, 87, 117, 179, 103, 128, 182, 66, 16, 224, 162, 66, 149, 99, 140, 65, 3, 18, 33, 66 };
-        private readonly static Byte[] aes_iv = { 247, 64, 177, 69, 237, 140, 48, 14, 217, 47, 210, 182, 194, 154, 170, 145 };
         private readonly static Dictionary<CompressType, CompressDelegate> MapOfCompress = new Dictionary<CompressType, CompressDelegate>() {
             { CompressType.Deflate, LOMCompress.DeflateCompress },
             { CompressType.GZip, LOMCompress.GZipCompress },
-            { CompressType.Encrypt, LOMCompress.EncryptCompress },
             { CompressType.ZLib, LOMCompress.ZLibCompress },
             { CompressType.Brotli, LOMCompress.BrotliCompress }
         };
@@ -78,7 +71,6 @@ namespace LOM.Shared.Compression
         private readonly static Dictionary<CompressType, CompressDelegate> MapOfDecompress = new Dictionary<CompressType, CompressDelegate>() {
             { CompressType.Deflate, LOMCompress.DeflateDecompress },
             { CompressType.GZip, LOMCompress.GZipDecompress },
-            { CompressType.Encrypt, LOMCompress.EncryptDecompress },
             { CompressType.ZLib, LOMCompress.ZLibDecompress },
             { CompressType.Brotli, LOMCompress.BrotliDecompress }
         };
@@ -113,61 +105,6 @@ namespace LOM.Shared.Compression
             }
             return bytes;
         }
-
-        /// <summary>
-        /// AES加密
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static byte[] EncryptCompress(byte[] bytes)
-        {
-            using (Aes aesAlg = Aes.Create())
-            {
-                aesAlg.Key = aes_keys;
-                aesAlg.IV = aes_iv;
-                using (MemoryStream msEncrypt = new MemoryStream())
-                {
-                    using (ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV))
-                    {
-                        using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                        {
-                            csEncrypt.Write(bytes);
-                            csEncrypt.FlushFinalBlock();
-                            return msEncrypt.ToArray();
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// AES解密
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static byte[] EncryptDecompress(byte[] bytes)
-        {
-            using (Aes aesAlg = Aes.Create())
-            {
-                aesAlg.Key = aes_keys;
-                aesAlg.IV = aes_iv;
-
-                using (MemoryStream msEncrypt = new MemoryStream())
-                {
-                    using (ICryptoTransform encryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV))
-                    {
-                        using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                        {
-                            csEncrypt.Write(bytes);
-                            csEncrypt.FlushFinalBlock();
-                            return msEncrypt.ToArray();
-                        }
-                    }
-                }
-            }
-        }
-
-
 
         /// <summary>
         /// GZip压缩
