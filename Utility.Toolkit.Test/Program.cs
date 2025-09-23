@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Utility.Toolkit.Encodings;
 
@@ -9,6 +10,9 @@ namespace Utility.Toolkit.Test
     {
         static async Task Main(string[] args)
         {
+            var sss = RSA.Default.Encrypt(System.Text.Encoding.UTF8.GetBytes("12345678"), false);
+
+
             // 动态定义地图可行性（障碍物用Lambda定义）
             Func<Point, bool> isWalkable = (point) =>
             {

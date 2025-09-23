@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Utility.Toolkit.Enums;
+using Utility.Toolkit.Generals;
 
 namespace System
 {
@@ -11,6 +15,23 @@ namespace System
     /// </summary>
     public static class BaseTypeExtensions
     {
+        ///
+        extension<TSource>(IEnumerable<TSource> source) // extension members for IEnumerable<TSource>
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public bool IsEmpty => !source.Any();
+
+            // Extension method:
+            //public IEnumerable<TSource> Where(Func<TSource, bool> predicate) { ... }
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// 获取枚举值上的Description特性的说明
@@ -29,18 +50,6 @@ namespace System
             return descAttr.Description;
         }
 
-        /// <summary>
-        /// 获取指定枚举类型的所有成员
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static T[] GetMembers<T>() where T : Enum
-        {
-            var array = Enum.GetValues(typeof(T));
-            T[] Result = new T[array.Length];
-            array.CopyTo(Result, 0);
-            return Result;
-        }
 
         /// <summary>
         /// 
@@ -76,7 +85,7 @@ namespace System
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public static Direction8 Direction8(this Point start, Point end)
+        public static Direction8 Direction(this Point start, Point end)
         {
             var Rad = Math.PI / 180;
             Double a = 0;
@@ -84,7 +93,7 @@ namespace System
             var Value = new PointF(end.X - start.X, end.Y - start.Y);
             if (Value.X == 0 && Value.Y == 0)
             {
-                return Utility.Toolkit.Enums.Direction8.DIR_UP;
+                return Direction8.UP;
             }
             if (Math.Abs(Value.X) < Math.Abs(Value.Y))
             {
@@ -123,21 +132,21 @@ namespace System
         {
             switch (dir)
             {
-                case Utility.Toolkit.Enums.Direction8.DIR_UP:
+                case Direction8.UP:
                     return new Point(source.X, source.Y - step);
-                case Utility.Toolkit.Enums.Direction8.DIR_UPRIGHT:
+                case Direction8.UPRIGHT:
                     return new Point(source.X + step, source.Y - step);
-                case Utility.Toolkit.Enums.Direction8.DIR_RIGHT:
+                case Direction8.RIGHT:
                     return new Point(source.X + step, source.Y);
-                case Utility.Toolkit.Enums.Direction8.DIR_DOWNRIGHT:
+                case Direction8.DOWNRIGHT:
                     return new Point(source.X + step, source.Y + step);
-                case Utility.Toolkit.Enums.Direction8.DIR_DOWN:
+                case Direction8.DOWN:
                     return new Point(source.X, source.Y + step);
-                case Utility.Toolkit.Enums.Direction8.DIR_DOWNLEFT:
+                case Direction8.DOWNLEFT:
                     return new Point(source.X - step, source.Y + step);
-                case Utility.Toolkit.Enums.Direction8.DIR_LEFT:
+                case Direction8.LEFT:
                     return new Point(source.X - step, source.Y);
-                case Utility.Toolkit.Enums.Direction8.DIR_UPLEFT:
+                case Direction8.UPLEFT:
                     return new Point(source.X - step, source.Y - step);
                 default:
                     break;
@@ -146,16 +155,16 @@ namespace System
         }
 
 
-        private static readonly Direction8[][] DIRECTION8_DEFINES = [
-            [Utility.Toolkit.Enums.Direction8.DIR_UPLEFT, Utility.Toolkit.Enums.Direction8.DIR_UPRIGHT],
-            [Utility.Toolkit.Enums.Direction8.DIR_UP, Utility.Toolkit.Enums.Direction8.DIR_RIGHT],
-            [Utility.Toolkit.Enums.Direction8.DIR_UPRIGHT, Utility.Toolkit.Enums.Direction8.DIR_DOWNRIGHT],
-            [Utility.Toolkit.Enums.Direction8.DIR_RIGHT, Utility.Toolkit.Enums.Direction8.DIR_DOWN],
-            [Utility.Toolkit.Enums.Direction8.DIR_DOWNRIGHT, Utility.Toolkit.Enums.Direction8.DIR_DOWNLEFT],
-            [Utility.Toolkit.Enums.Direction8.DIR_DOWN, Utility.Toolkit.Enums.Direction8.DIR_LEFT],
-            [Utility.Toolkit.Enums.Direction8.DIR_DOWNLEFT, Utility.Toolkit.Enums.Direction8.DIR_UPLEFT],
-            [Utility.Toolkit.Enums.Direction8.DIR_LEFT, Utility.Toolkit.Enums.Direction8.DIR_UP],
-            ];
+        private static readonly Orientation8[] DIRECTION8_DEFINES = [
+            new Orientation8(Direction8.UP, Direction8.UPLEFT, Direction8.UPRIGHT),
+            new Orientation8(Direction8.UPRIGHT, Direction8.UP, Direction8.RIGHT),
+            new Orientation8(Direction8.RIGHT, Direction8.UPRIGHT, Direction8.DOWNRIGHT),
+            new Orientation8(Direction8.DOWNRIGHT, Direction8.RIGHT, Direction8.DOWN),
+            new Orientation8(Direction8.DOWN, Direction8.DOWNRIGHT, Direction8.DOWNLEFT),
+            new Orientation8(Direction8.DOWNLEFT, Direction8.DOWN, Direction8.LEFT),
+            new Orientation8(Direction8.LEFT, Direction8.DOWNLEFT, Direction8.UPLEFT),
+            new Orientation8(Direction8.UPLEFT, Direction8.LEFT, Direction8.UP),
+        ];
 
 
 
@@ -164,7 +173,7 @@ namespace System
         /// </summary>
         /// <param name="direction">方向</param>
         /// <returns>0:LEFT DIR, 1:RIGHT DIR</returns>
-        public static Direction8[] Sides(this Direction8 direction)
+        public static Orientation8 Sides(this Direction8 direction)
         {
             return DIRECTION8_DEFINES[(Byte)direction];
         }
@@ -236,28 +245,6 @@ namespace System
         }
 
 
-
-        /// <summary>
-        /// 将Byte转换为结构体类型
-        /// </summary>
-        /// <typeparam name="T">要转换的结构体类型</typeparam>
-        /// <param name="bytes">Bytes数组</param>
-        /// <returns>结构体对象</returns>
-        public static T ToStruct<T>(this byte[] bytes) where T : struct
-        {
-            int size = Marshal.SizeOf(typeof(T));
-            if (size > bytes.Length)
-                return default(T);
-            //分配结构体内存空间
-            IntPtr structPtr = Marshal.AllocHGlobal(size);
-            //将byte数组拷贝到分配好的内存空间
-            Marshal.Copy(bytes, 0, structPtr, size);
-            //将内存空间转换为目标结构体
-            T obj = (T)Marshal.PtrToStructure(structPtr, typeof(T));
-            //释放内存空间
-            Marshal.FreeHGlobal(structPtr);
-            return obj;
-        }
 
 
     }

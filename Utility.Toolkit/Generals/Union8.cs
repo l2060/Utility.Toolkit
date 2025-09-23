@@ -1,75 +1,80 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
-namespace Utility.Toolkit.Enums
+
+namespace Utility.Toolkit.Generals
 {
     /// <summary>
-    /// 16方向枚举
+    /// 
     /// </summary>
-    public enum Direction16 : Byte
+    [StructLayout(LayoutKind.Explicit)]
+    public struct Union8
     {
         /// <summary>
         /// 
         /// </summary>
-        UP = 0,
+        [FieldOffset(0)] public Int64 Int64;
         /// <summary>
         /// 
         /// </summary>
-        UPUPRIGHTC = 1,
+        [FieldOffset(0)] public Double Double;
         /// <summary>
         /// 
         /// </summary>
-        UPRIGHT = 2,
+        [FieldOffset(0)] public Int32 Int32H;
         /// <summary>
         /// 
         /// </summary>
-        DOWNUPRIGHT = 3,
+        [FieldOffset(4)] public Int32 Int32L;
+
         /// <summary>
         /// 
         /// </summary>
-        RIGHT = 4,
+        [FieldOffset(0)] public Int16 Int16H1;
         /// <summary>
         /// 
         /// </summary>
-        UPDOWNRIGHT = 5,
+        [FieldOffset(2)] public Int16 Int16H2;
         /// <summary>
         /// 
         /// </summary>
-        DOWNRIGHT = 6,
+        [FieldOffset(4)] public Int16 Int16L1;
         /// <summary>
         /// 
         /// </summary>
-        DOWNDOWNRIGHT = 7,
+        [FieldOffset(6)] public Int16 Int16L2;
         /// <summary>
         /// 
         /// </summary>
-        DOWN = 8,
+        [FieldOffset(0)] public Byte Byte1;
         /// <summary>
         /// 
         /// </summary>
-        RIGHTLEFTDOWN = 9,
+        [FieldOffset(1)] public Byte Byte2;
         /// <summary>
         /// 
         /// </summary>
-        LEFTDOWN = 10,
+        [FieldOffset(2)] public Byte Byte3;
         /// <summary>
         /// 
         /// </summary>
-        LEFTLEFTDOWN = 11,
+        [FieldOffset(3)] public Byte Byte4;
         /// <summary>
         /// 
         /// </summary>
-        LEFT = 12,
+        [FieldOffset(4)] public Byte Byte5;
         /// <summary>
         /// 
         /// </summary>
-        DOWNUPLEFT = 13,
+        [FieldOffset(5)] public Byte Byte6;
         /// <summary>
         /// 
         /// </summary>
-        UPLEFT = 14,
+        [FieldOffset(6)] public Byte Byte7;
         /// <summary>
         /// 
         /// </summary>
-        UPUPLEFT = 15,
+        [FieldOffset(7)] public Byte Byte8;
+
     }
 }
