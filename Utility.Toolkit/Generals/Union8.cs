@@ -14,6 +14,8 @@ namespace Utility.Toolkit.Generals
         /// 
         /// </summary>
         [FieldOffset(0)] public Int64 Int64;
+        [FieldOffset(0)] public UInt64 UInt64;
+
         /// <summary>
         /// 
         /// </summary>
@@ -22,27 +24,33 @@ namespace Utility.Toolkit.Generals
         /// 
         /// </summary>
         [FieldOffset(0)] public Int32 Int32H;
+        [FieldOffset(0)] public UInt32 UInt32H;
         /// <summary>
         /// 
         /// </summary>
         [FieldOffset(4)] public Int32 Int32L;
+        [FieldOffset(4)] public UInt32 UInt32L;
 
         /// <summary>
         /// 
         /// </summary>
         [FieldOffset(0)] public Int16 Int16H1;
+        [FieldOffset(0)] public UInt16 UInt16H1;
         /// <summary>
         /// 
         /// </summary>
         [FieldOffset(2)] public Int16 Int16H2;
+        [FieldOffset(2)] public UInt16 UInt16H2;
         /// <summary>
         /// 
         /// </summary>
         [FieldOffset(4)] public Int16 Int16L1;
+        [FieldOffset(4)] public UInt16 UInt16L1;
         /// <summary>
         /// 
         /// </summary>
         [FieldOffset(6)] public Int16 Int16L2;
+        [FieldOffset(6)] public UInt16 UInt16L2;
         /// <summary>
         /// 
         /// </summary>

@@ -17,6 +17,10 @@ namespace Utility.Toolkit.Generals
         /// </summary>
          
         [FieldOffset(0)] public Int32 Int32;
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(0)] public UInt32 UInt32;
 
         /// <summary>
         /// Int16 高位
@@ -27,6 +31,17 @@ namespace Utility.Toolkit.Generals
         /// Int16 低位
         /// </summary>
         [FieldOffset(2)] public Int16 Int16L;
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(0)] public UInt16 UInt16H;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [FieldOffset(2)] public UInt16 UInt16L;
 
         /// <summary>
         /// 
