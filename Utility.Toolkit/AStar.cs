@@ -46,7 +46,7 @@ namespace Utility.Toolkit
         /// <param name="goal"></param>
         /// <param name="isWalkable"></param>
         /// <returns></returns>
-        public static List<Point> FindPath(Point start, Point goal, Func<Point, bool> isWalkable)
+        public static List<Point> FindPath(Point start, Point goal,  Func<Point, bool>  isWalkable)
         {
             // 开放列表：使用优先队列
             var openList = new PriorityQueue<Node, int>();

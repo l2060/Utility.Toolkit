@@ -9,6 +9,9 @@ namespace Utility.Toolkit.Encodings
     /// </summary>
     public class RSA
     {
+        public static readonly RSA Default = new RSA();
+
+
         /// <summary>
         /// 默认RSA 加密对象
         /// </summary>
